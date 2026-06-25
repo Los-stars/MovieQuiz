@@ -5,6 +5,7 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
     
     // MARK: - Lifecycle
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var questionTitleLabel: UILabel!
     @IBOutlet private weak var indexLabel: UILabel!
     @IBOutlet private weak var previewImage: UIImageView!
@@ -27,13 +28,35 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
         super.viewDidLoad()
         setupImage()
         
-        let questionFactory = QuestionFactory()
-        let staticticService = StatisticService()
-        self.staticticService = staticticService
-        questionFactory.delegate = self
-        self.questionFactory = questionFactory
+        previewImage.layer.cornerRadius = 20
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        staticticService = StatisticService()
         
-        questionFactory.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory?.loadData()
+    }
+    private func showNetworkError(message: String) {
+//        hideLoadingIndicator()
+        
+        // создайте и покажите алерт
+        let alertModel = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать ещё раз"){ [weak self] in
+            guard let self = self else { return }
+            
+            currentQuestionIndex = 0
+            correctAnswers = 0
+            
+            questionFactory?.requestNextQuestion()
+            
+            buttonIsEnabled = true
+            yesButton.isEnabled = buttonIsEnabled ?? true
+            noButton.isEnabled = buttonIsEnabled ?? true
+        }
+        alertPresenter.showAlert(model: alertModel, from: self)
+    }
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -49,6 +72,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
+    }
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: any Error) {
+        showNetworkError(message: error.localizedDescription)
     }
     
     private func setupImage(){
@@ -76,17 +108,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate{
         }else{
             addLayer(image: previewImage, color: .ypRed)
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.showNextQuestionOrResults()
+        }
+        
         buttonIsEnabled = false
         yesButton.isEnabled = buttonIsEnabled
         noButton.isEnabled = buttonIsEnabled
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.showNextQuestionOrResults()
-        }
     }
         
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let newModel = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question:model.questionTitle, questionNumber: "\(currentQuestionIndex+1)/\(questionsAmount)")
+        let newModel = QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex+1)/\(questionsAmount)")
+
         return newModel
     }
         

@@ -100,17 +100,27 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Hyf-tn-bpx">
+                                <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                                <color key="backgroundColor" name="YP Black"/>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="au3-2M-HRK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="E5s-tY-JWn"/>
+                            <constraint firstItem="Hyf-tn-bpx" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="M1H-wj-yx8"/>
+                            <constraint firstItem="Hyf-tn-bpx" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="WxE-Ys-C2T"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="au3-2M-HRK" secondAttribute="bottom" id="a2H-yd-5cB"/>
+                            <constraint firstItem="Hyf-tn-bpx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="h2J-Lw-wNM"/>
+                            <constraint firstItem="Hyf-tn-bpx" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="lJR-kb-lUq"/>
                             <constraint firstItem="au3-2M-HRK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="p5B-Kb-nPy"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="au3-2M-HRK" secondAttribute="trailing" constant="20" id="uAv-Ig-USx"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Hyf-tn-bpx" id="RCq-Vv-VUT"/>
                         <outlet property="indexLabel" destination="7Ai-kS-0NC" id="dxA-94-H5K"/>
                         <outlet property="noButton" destination="iT9-ps-PDC" id="PkN-N7-gjz"/>
                         <outlet property="previewImage" destination="e7r-at-29O" id="pVE-Sl-d8S"/>
