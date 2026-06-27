@@ -61,6 +61,7 @@ class QuestionFactory: QuestionFactoryProtocol{
                 }
             }
         }
+        print(movies)
     }
     
     //    private let quizQuestions : [QuizQuestion] = [

@@ -10,28 +10,45 @@ import Testing
 import XCTest
 
 class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
+    
+    var showQuizStepCalled = false
+    var showQuizResultCalled = false
+    var highlightImageBordedCalled = false
+    var showLoadingIndicatorCalled = false
+    var hideLoadingIndicatorCalled = false
+    var showNetworkErrorCalled = false
+    
+    var lastRecievedViewModel: QuizStepViewModel?
+    var lastRecievedResultViewModel: QuizResultsViewModel?
+    var lastReceivedIsCorrectAnswer: Bool?
+    var lastReceivedErrorMessage: String?
+    
     func show(quiz step: MovieQuiz.QuizStepViewModel) {
-        <#code#>
+        showQuizStepCalled = true
+        lastRecievedViewModel = step
     }
     
     func show(quiz result: MovieQuiz.QuizResultsViewModel) {
-        <#code#>
+        showQuizResultCalled = true
+        lastRecievedResultViewModel = result
     }
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
-        <#code#>
+        highlightImageBordedCalled = true
+        lastReceivedIsCorrectAnswer = isCorrectAnswer
     }
     
     func showLoadingIndicator() {
-        <#code#>
+        showLoadingIndicatorCalled = true
     }
     
     func hideLoadingIndicator() {
-        <#code#>
+        hideLoadingIndicatorCalled = true
     }
     
     func showNetworkError(message: String) {
-        <#code#>
+        showNetworkErrorCalled = true
+        lastReceivedErrorMessage = message
     }
 }
 

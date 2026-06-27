@@ -67,7 +67,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             
             self.presenter.restartGame()
         }
-        
+        alert.view.accessibilityIdentifier = "GameResultAlert"
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
@@ -86,6 +86,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     func hideLoadingIndicator(){
         activityIndicator.isHidden = true
+        print("hello")
     }
     
     func showNetworkError(message: String) {
